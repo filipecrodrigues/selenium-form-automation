@@ -1,6 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import logging
@@ -25,35 +28,53 @@ options = webdriver.ChromeOptions()
 options.add_argument("--start-maximized")
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+wait = WebDriverWait(driver, 10)
 
 for aluno in alunos:
     try:
         driver.get("https://docs.google.com/forms/d/e/1FAIpQLSfh9ebeWaWA27bQYKLOt359E9zvgJzvljSD48Px_VV4qP97eQ/viewform?usp=sharing&ouid=103546220084617813983")
-        time.sleep(2)
+        
+        # Aguarda os campos carregarem
+        time.sleep(3)
 
-        campos = driver.find_elements(By.CSS_SELECTOR, "div[contenteditable='true']")
-
+        # Tenta encontrar os campos de input do formulário
+        campos = driver.find_elements(By.CSS_SELECTOR, 'input[type="text"]')
+        
         if len(campos) >= 2:
-            campos[0].send_keys(aluno["Nome"])
-            campos[1].send_keys(aluno["Cpf"])
+            campos[0].clear()
+            campos[0].send_keys(aluno["nome"])  # Corrigido: minúsculo
+            
+            campos[1].clear()
+            campos[1].send_keys(aluno["cpf"])   # Corrigido: minúsculo
+            
+            msg = f"Dados preenchidos para: {aluno['nome']}"
+            print(msg)
+            logging.info(msg)
         else:
             msg = f"Erro: campos não encontrados para {aluno['nome']} - {aluno['cpf']}"
             print(msg)
             logging.error(msg)
             continue
 
+        # Aguarda um pouco antes de enviar
+        time.sleep(2)
+
         # Clica no botão "Enviar"
-        botao_enviar = driver.find_element(By.XPATH, '//span[text()="Enviar"]')
+        botao_enviar = wait.until(
+            EC.element_to_be_clickable((By.XPATH, '//span[text()="Enviar"]'))
+        )
         botao_enviar.click()
 
         msg = f"Formulário enviado para: {aluno['nome']} - {aluno['cpf']}"
         print(msg)
         logging.info(msg)
-        time.sleep(2)
+        time.sleep(3)
 
         # Clica em "Enviar outra resposta"
         try:
-            outro = driver.find_element(By.LINK_TEXT, "Enviar outra resposta")
+            outro = wait.until(
+                EC.element_to_be_clickable((By.LINK_TEXT, "Enviar outra resposta"))
+            )
             outro.click()
             time.sleep(2)
         except:
@@ -63,6 +84,8 @@ for aluno in alunos:
             break
 
     except Exception as e:
-        logging.exception(f"Erro ao processar aluno: {aluno['nome']} - {aluno['cpf']}")
+        msg = f"Erro ao processar aluno: {aluno['nome']} - {aluno['cpf']} - Erro: {str(e)}"
+        print(msg)
+        logging.exception(msg)
 
 driver.quit()
