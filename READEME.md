@@ -192,14 +192,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
 5. Abrir um Pull Request
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
-## 👨‍💻 Autor
-
-**Filipe**
-
-- GitHub: [filipecrodrigues](https://github.com/filipecrodrigues)
-
