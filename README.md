@@ -16,7 +16,7 @@ Projeto de automação para preenchimento em massa de formulários do Google For
 
 ## 🎯 Sobre o Projeto
 
-Este script automatiza o preenchimento de formulários do Google Forms com dados de múltiplos usuários, registrando todas as operações em arquivo de log para auditoria e controle.
+Este script automatiza o preenchimento de formulários do Google Forms com dados de múltiplos alunos, registrando todas as operações em arquivo de log para auditoria e controle.
 
 ## 📊 Fluxograma
 
