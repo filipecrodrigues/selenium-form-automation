@@ -197,8 +197,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 
 Este projeto é de código aberto para fins educacionais.
 
-## 👨‍💻 Autor
 
-**Filipe**
-
-- GitHub: [filipecrodrigues](https://github.com/filipecrodrigues)
